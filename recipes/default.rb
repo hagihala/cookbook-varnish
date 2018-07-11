@@ -20,8 +20,6 @@
 
 include_recipe 'varnish::repo' if node['varnish']['use_default_repo']
 
-package 'varnish'
-
 template node['varnish']['default'] do
   source node['varnish']['conf_source']
   cookbook node['varnish']['conf_cookbook']
@@ -40,6 +38,8 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   notifies :reload, 'service[varnish]', :delayed
   only_if { node['varnish']['vcl_generated'] == true }
 end
+
+package 'varnish'
 
 service 'varnish' do
   supports restart: true, reload: true
