@@ -29,6 +29,14 @@ template node['varnish']['default'] do
   notifies 'restart', 'service[varnish]', :delayed
 end
 
+directory "#{node['varnish']['dir']}/" do
+  owner 'root'
+  group 'root'
+  mode  0755
+  recursive true
+  action :create
+end
+
 template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   source node['varnish']['vcl_source']
   cookbook node['varnish']['vcl_cookbook']
